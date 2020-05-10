@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Image, View, FlatList, Text } from 'react-native';
+import { Image, View, FlatList, Text, TextInput, Button } from 'react-native';
 import AnalogClock from 'react-native-clock-analog';
-import { Container, Header, ClockerContainer, HourLabel, DateLabel, Section, Title, ScheduleContainer, ScheduledTime, ScheduledDescription, EmptySchedule } from './styles';
+import { Container, Header, ClockerContainer, HourLabel, DateLabel, Section, Title, ScheduleContainer, ScheduledTime, ScheduledDescription, EmptySchedule, SectionHeader, StopWatchLabelInput, StopWatchLabelContainer } from './styles';
 import { format, compareAsc } from 'date-fns'
 import brLocale from 'date-fns/locale/pt-BR';
 
@@ -57,18 +57,14 @@ export default function Home() {
             </ClockerContainer>
 
             <Section>
-                <View style={{
-                    flexDirection: "row",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                    marginBottom: 10
-                }}>
+                <SectionHeader>
                     <Title>Sua agenda para hoje</Title>
                     <Text style={{ color: "#ccc" }}>Criar novo</Text>
-                </View>
+                </SectionHeader>
                 <FlatList
                     data={[]}
                     keyExtractor={item => String(item)}
+                    scrollEnabled={false}
                     renderItem={({ item }) => (
                         <ScheduleContainer>
                             <ScheduledTime>22:10</ScheduledTime>
@@ -77,6 +73,30 @@ export default function Home() {
                     )}
                     ListEmptyComponent={<EmptySchedule>Não há nada agendado para hoje!</EmptySchedule>}
                 />
+            </Section>
+            <Section>
+                <SectionHeader>
+                    <Title>Cronometrar</Title>
+                </SectionHeader>
+                <View style={{
+                    flexDirection: "row",
+                    alignItems: "center",
+                }}>
+                    <StopWatchLabelContainer>
+                        <StopWatchLabelInput
+                            placeholder="O que você irá fazer?"
+                        />
+                    </StopWatchLabelContainer>
+                    <View style={{
+                        marginTop: -10
+                    }}>
+                        <Button
+                            title="Iniciar"
+                            onPress={() => null}
+                            color="#A2189D"
+                        />
+                    </View>
+                </View>
             </Section>
         </Container>
     );

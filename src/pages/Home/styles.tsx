@@ -1,6 +1,6 @@
 import styled from 'styled-components/native';
 
-export const Container = styled.View`
+export const Container = styled.ScrollView`
     flex: 1;
     background-color: #82327E;
 `;
@@ -32,8 +32,16 @@ export const Section = styled.View`
     background-color: #6D216A;
     padding: 8px 16px;
     margin: 16px;
+    margin-bottom: 0px;
     border-radius: 10px;
 `
+export const SectionHeader = styled.View`
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+`
+
 export const Title = styled.Text`
     color: white;
     font-size: 20px;
@@ -59,4 +67,23 @@ export const EmptySchedule = styled.Text`
     color: rgba(255,255,255,0.35);
     text-align: center;
     margin: 10px 0px;
+`
+
+export const StopWatchLabelInput = styled.TextInput`
+    /* background-color: rgba(0,0,0,0.2); */
+    /* padding: 5px; */
+    /* padding-left: 10px; */
+    /* margin-bottom: 10px; */
+    color: white;
+    /* flex: 1; */
+    /* margin-right: 10px; */
+`
+export const StopWatchLabelContainer = styled.View`
+    background-color: rgba(0,0,0,0.2);
+    padding: 5px;
+    padding-left: 10px;
+    margin-bottom: 10px;
+    color: white;
+    flex: 1;
+    margin-right: 10px;
 `
