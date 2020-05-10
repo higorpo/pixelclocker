@@ -4,11 +4,13 @@ import AnalogClock from 'react-native-clock-analog';
 import { Container, Header, ClockerContainer, HourLabel, DateLabel, Section, Title, ScheduleContainer, ScheduledTime, ScheduledDescription, EmptySchedule, SectionHeader, StopWatchLabelInput, StopWatchLabelContainer, ActivityRecordContainer, ActivityRecordDescription, ActivityRecordTime } from './styles';
 import { format, compareAsc } from 'date-fns'
 import brLocale from 'date-fns/locale/pt-BR';
+import { useNavigation } from '@react-navigation/native';
 
 const logo = require("../../../assets/logo.png");
 
+const Home: React.FC = () => {
+    const navigation = useNavigation();
 
-export default function Home() {
     /**
      * State
      */
@@ -59,7 +61,7 @@ export default function Home() {
             <Section>
                 <SectionHeader>
                     <Title>Sua agenda para hoje</Title>
-                    <Text style={{ color: "#ccc" }}>Criar novo</Text>
+                    <Text style={{ color: "#ccc" }} onPress={() => navigation.navigate("CreateNewEvent")}>Criar novo</Text>
                 </SectionHeader>
                 <FlatList
                     data={[]}
@@ -119,3 +121,5 @@ export default function Home() {
         </Container>
     );
 }
+
+export default Home;
