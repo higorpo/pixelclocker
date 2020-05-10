@@ -28,3 +28,35 @@ export const DateLabel = styled.Text`
     color: white;
     margin-top: -5px;
 `
+export const Section = styled.View`
+    background-color: #6D216A;
+    padding: 8px 16px;
+    margin: 16px;
+    border-radius: 10px;
+`
+export const Title = styled.Text`
+    color: white;
+    font-size: 20px;
+`
+export const ScheduleContainer = styled.View`
+    flex-direction: row;
+    padding: 10px 0px;
+    align-items: flex-start;
+`
+
+export const ScheduledTime = styled.Text`
+    color: white;
+    font-size: 22px;
+    margin-right: 10px;
+`
+
+export const ScheduledDescription = styled.Text`
+    flex: 1;
+    color: white;
+`
+
+export const EmptySchedule = styled.Text`
+    color: rgba(255,255,255,0.35);
+    text-align: center;
+    margin: 10px 0px;
+`
