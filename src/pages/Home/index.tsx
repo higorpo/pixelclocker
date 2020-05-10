@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Image, View, FlatList, Text, TextInput, Button } from 'react-native';
 import AnalogClock from 'react-native-clock-analog';
-import { Container, Header, ClockerContainer, HourLabel, DateLabel, Section, Title, ScheduleContainer, ScheduledTime, ScheduledDescription, EmptySchedule, SectionHeader, StopWatchLabelInput, StopWatchLabelContainer } from './styles';
+import { Container, Header, ClockerContainer, HourLabel, DateLabel, Section, Title, ScheduleContainer, ScheduledTime, ScheduledDescription, EmptySchedule, SectionHeader, StopWatchLabelInput, StopWatchLabelContainer, ActivityRecordContainer, ActivityRecordDescription, ActivityRecordTime } from './styles';
 import { format, compareAsc } from 'date-fns'
 import brLocale from 'date-fns/locale/pt-BR';
 
@@ -97,6 +97,24 @@ export default function Home() {
                         />
                     </View>
                 </View>
+            </Section>
+            <Section style={{ marginBottom: 16 }}>
+                <SectionHeader>
+                    <Title>Registro de atividades</Title>
+                    <Text style={{ color: "#ccc" }}>Copiar</Text>
+                </SectionHeader>
+                <FlatList
+                    data={[0, 1, 2, 3]}
+                    keyExtractor={item => String(item)}
+                    scrollEnabled={false}
+                    renderItem={({ item }) => (
+                        <ActivityRecordContainer>
+                            <ActivityRecordDescription>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur ultrices.</ActivityRecordDescription>
+                            <ActivityRecordTime>1:06:10</ActivityRecordTime>
+                        </ActivityRecordContainer>
+                    )}
+                    ListEmptyComponent={<EmptySchedule>Não há nenhuma atividade cadastrada!</EmptySchedule>}
+                />
             </Section>
         </Container>
     );

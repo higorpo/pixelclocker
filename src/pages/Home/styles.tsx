@@ -70,13 +70,7 @@ export const EmptySchedule = styled.Text`
 `
 
 export const StopWatchLabelInput = styled.TextInput`
-    /* background-color: rgba(0,0,0,0.2); */
-    /* padding: 5px; */
-    /* padding-left: 10px; */
-    /* margin-bottom: 10px; */
     color: white;
-    /* flex: 1; */
-    /* margin-right: 10px; */
 `
 export const StopWatchLabelContainer = styled.View`
     background-color: rgba(0,0,0,0.2);
@@ -86,4 +80,23 @@ export const StopWatchLabelContainer = styled.View`
     color: white;
     flex: 1;
     margin-right: 10px;
+`
+
+export const ActivityRecordContainer = styled.View`
+    flex-direction: row;
+    padding: 10px 0px;
+    align-items: flex-start;
+`
+
+export const ActivityRecordTime = styled.Text`
+    color: white;
+    font-size: 22px;
+    margin-right: 10px;
+    min-width: 75px;
+    text-align: right;
+`
+
+export const ActivityRecordDescription = styled.Text`
+    flex: 1;
+    color: white;
 `
