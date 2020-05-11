@@ -1,12 +1,12 @@
 import { useNavigation } from '@react-navigation/native';
-import { format, differenceInSeconds } from 'date-fns';
+import { differenceInSeconds, format } from 'date-fns';
 import brLocale from 'date-fns/locale/pt-BR';
 import React, { useEffect, useState } from 'react';
-import { Button, FlatList, Image, Text, View, Alert, Clipboard } from 'react-native';
+import { Alert, Button, Clipboard, FlatList, Image, Text, View } from 'react-native';
 import AnalogClock from 'react-native-clock-analog';
-import { ActivityRecordContainer, ActivityRecordDescription, ActivityRecordTime, ClockerContainer, Container, DateLabel, EmptySchedule, Header, HourLabel, ScheduleContainer, ScheduledDescription, ScheduledTime, Section, SectionHeader, StopWatchLabelContainer, StopWatchLabelInput, Title } from './styles';
 import { useDispatch, useSelector } from 'react-redux';
 import { Creators } from '../../store/ducks/activity_record';
+import { ActivityRecordContainer, ActivityRecordDescription, ActivityRecordTime, ClockerContainer, Container, DateLabel, EmptySchedule, Header, HourLabel, ScheduleContainer, ScheduledDescription, ScheduledTime, Section, SectionHeader, StopWatchLabelContainer, StopWatchLabelInput, Title } from './styles';
 
 const logo = require("../../../assets/logo.png");
 
@@ -29,7 +29,6 @@ const Home: React.FC = () => {
     const [startedStopwatchTime, setStartedStopwatchTime] = useState<any>();
 
     const [scheduledData, setScheduledData] = useState<Array<any>>([]);
-    const [activityRecordDate, setActivityRecordDate] = useState<Array<any>>([]);
 
     /**
      * Store
@@ -163,9 +162,10 @@ const Home: React.FC = () => {
                 <FlatList
                     data={scheduledData}
                     scrollEnabled={false}
+                    keyExtractor={item => String(Date.now() + item.description)}
                     renderItem={({ item, index }) => (
                         // @ts-ignore
-                        <ScheduleContainer key={Date.now()} descriptionLength={item.description.length}>
+                        <ScheduleContainer descriptionLength={item.description.length}>
                             <ScheduledTime>{format(new Date(item.date), "HH:mm", { locale: brLocale })}</ScheduledTime>
                             <ScheduledDescription>{item.description}</ScheduledDescription>
                         </ScheduleContainer>
@@ -215,9 +215,10 @@ const Home: React.FC = () => {
                 <FlatList
                     data={activity_records}
                     scrollEnabled={false}
+                    keyExtractor={item => String(Date.now() + item.description)}
                     renderItem={({ item, index }) => (
                         // @ts-ignore
-                        <ActivityRecordContainer key={Date.now()} descriptionLength={item.description.length}>
+                        <ActivityRecordContainer descriptionLength={item.description.length}>
                             <ActivityRecordDescription>{item.description}</ActivityRecordDescription>
                             <ActivityRecordTime>{item.time}</ActivityRecordTime>
                         </ActivityRecordContainer>

@@ -1,14 +1,14 @@
-import { applyMiddleware, createStore } from 'redux';
-import { persistStore, persistReducer } from 'redux-persist';
 import { AsyncStorage } from 'react-native';
+import { applyMiddleware, createStore } from 'redux';
 import logger from 'redux-logger';
-
+import { persistReducer, persistStore } from 'redux-persist';
 import reducers from './ducks';
+
 
 const persistConfig = {
     key: 'root',
     storage: AsyncStorage,
-    timeout: 0, // The code base checks for falsy, so 0 disables
+    timeout: 0,
     // blacklist: ['schedule']
 }
 

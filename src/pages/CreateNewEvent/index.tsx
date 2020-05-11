@@ -3,11 +3,11 @@ import { CardStyleInterpolators } from '@react-navigation/stack';
 import { format } from 'date-fns';
 import brLocale from 'date-fns/locale/pt-BR';
 import React, { useState } from 'react';
-import { Button, Text, TouchableOpacity, View, Alert } from 'react-native';
+import { Alert, Button, Text, TouchableOpacity, View } from 'react-native';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
-import { Input, InputContainer } from './styles';
+import { useDispatch } from 'react-redux';
 import { Creators } from '../../store/ducks/schedule';
-import { useDispatch } from 'react-redux'
+import { Input, InputContainer } from './styles';
 
 const CreateNewEvent: React.FC = () => {
     const navigation = useNavigation();
