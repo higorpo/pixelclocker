@@ -5,12 +5,14 @@ import React, { useEffect, useState } from 'react';
 import { Button, FlatList, Image, Text, View } from 'react-native';
 import AnalogClock from 'react-native-clock-analog';
 import { ActivityRecordContainer, ActivityRecordDescription, ActivityRecordTime, ClockerContainer, Container, DateLabel, EmptySchedule, Header, HourLabel, ScheduleContainer, ScheduledDescription, ScheduledTime, Section, SectionHeader, StopWatchLabelContainer, StopWatchLabelInput, Title } from './styles';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { Creators } from '../../store/ducks/activity_record';
 
 const logo = require("../../../assets/logo.png");
 
 const Home: React.FC = () => {
     const navigation = useNavigation();
+    const dispatch = useDispatch();
 
     /**
      * State
@@ -21,17 +23,19 @@ const Home: React.FC = () => {
     const [hourFormated, setHourFormated] = useState<string>("00:00");
     const [dateFormated, setDateFormated] = useState<string>("Quarta-feira, 26/03");
 
-    const [scheduledData, setScheduledData] = useState<Array<any>>([]);
-
     const [formatedStopwatchCounter, setFormatedStopwatchCounter] = useState<string>("");
     const [startedStopwatch, setStartedStopwatch] = useState<boolean>(false);
     const [stopwatchLabel, setStopwatchLabel] = useState<string>("");
     const [startedStopwatchTime, setStartedStopwatchTime] = useState<any>();
 
+    const [scheduledData, setScheduledData] = useState<Array<any>>([]);
+    const [activityRecordDate, setActivityRecordDate] = useState<Array<any>>([]);
+
     /**
      * Store
      */
     const scheduled = useSelector(state => state.schedule);
+    const activity_records = useSelector(state => state.activity_record);
 
     useEffect(() => {
         const timer = setInterval(() => {
@@ -96,7 +100,10 @@ const Home: React.FC = () => {
     }
 
     function handleClearStopwatch() {
+        dispatch(Creators.addNewRecord(stopwatchLabel, formatedStopwatchCounter));
         setStartedStopwatch(false);
+        setStopwatchLabel("");
+        setStartedStopwatchTime("");
     }
 
     return (
@@ -133,7 +140,7 @@ const Home: React.FC = () => {
                     scrollEnabled={false}
                     renderItem={({ item, index }) => (
                         // @ts-ignore
-                        <ScheduleContainer ref={index} descriptionLength={item.description.length}>
+                        <ScheduleContainer key={Date.now()} descriptionLength={item.description.length}>
                             <ScheduledTime>{format(new Date(item.date), "HH:mm", { locale: brLocale })}</ScheduledTime>
                             <ScheduledDescription>{item.description}</ScheduledDescription>
                         </ScheduleContainer>
@@ -180,13 +187,13 @@ const Home: React.FC = () => {
                     <Text style={{ color: "#ccc" }}>Copiar</Text>
                 </SectionHeader>
                 <FlatList
-                    data={[0, 1, 2, 3]}
-                    keyExtractor={item => String(item)}
+                    data={activity_records}
                     scrollEnabled={false}
-                    renderItem={({ item }) => (
-                        <ActivityRecordContainer>
-                            <ActivityRecordDescription>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur ultrices.</ActivityRecordDescription>
-                            <ActivityRecordTime>1:06:10</ActivityRecordTime>
+                    renderItem={({ item, index }) => (
+                        // @ts-ignore
+                        <ActivityRecordContainer key={Date.now()} descriptionLength={item.description.length}>
+                            <ActivityRecordDescription>{item.description}</ActivityRecordDescription>
+                            <ActivityRecordTime>{item.time}</ActivityRecordTime>
                         </ActivityRecordContainer>
                     )}
                     ListEmptyComponent={<EmptySchedule>Não há nenhuma atividade cadastrada!</EmptySchedule>}

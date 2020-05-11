@@ -85,7 +85,7 @@ export const StopWatchLabelContainer = styled.View`
 export const ActivityRecordContainer = styled.View`
     flex-direction: row;
     padding: 10px 0px;
-    align-items: flex-start;
+    align-items: ${(props: any) => props.descriptionLength > 35 ? 'flex-start' : 'center'};
 `
 
 export const ActivityRecordTime = styled.Text`
