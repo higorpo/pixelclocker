@@ -2,7 +2,7 @@ import { useNavigation } from '@react-navigation/native';
 import { format, differenceInSeconds } from 'date-fns';
 import brLocale from 'date-fns/locale/pt-BR';
 import React, { useEffect, useState } from 'react';
-import { Button, FlatList, Image, Text, View } from 'react-native';
+import { Button, FlatList, Image, Text, View, Alert, Clipboard } from 'react-native';
 import AnalogClock from 'react-native-clock-analog';
 import { ActivityRecordContainer, ActivityRecordDescription, ActivityRecordTime, ClockerContainer, Container, DateLabel, EmptySchedule, Header, HourLabel, ScheduleContainer, ScheduledDescription, ScheduledTime, Section, SectionHeader, StopWatchLabelContainer, StopWatchLabelInput, Title } from './styles';
 import { useDispatch, useSelector } from 'react-redux';
@@ -72,7 +72,7 @@ const Home: React.FC = () => {
                 const seconds = (diff - parseInt(hours) * 60 * 60 - (parseInt(minutes) * 60)).toString();
 
                 setFormatedStopwatchCounter(`${hours.length < 2 ? 0 + hours : hours}:${minutes.length < 2 ? 0 + minutes : minutes}:${seconds.length < 2 ? 0 + seconds : seconds}`);
-                console.log(`${hours.length < 2 ? 0 + hours : hours}:${minutes.length < 2 ? 0 + minutes : minutes}:${seconds.length < 2 ? 0 + seconds : seconds}`)
+                // console.log(`${hours.length < 2 ? 0 + hours : hours}:${minutes.length < 2 ? 0 + minutes : minutes}:${seconds.length < 2 ? 0 + seconds : seconds}`)
             }, 1000);
         } else {
             setFormatedStopwatchCounter("00:00:00");
@@ -104,6 +104,31 @@ const Home: React.FC = () => {
         setStartedStopwatch(false);
         setStopwatchLabel("");
         setStartedStopwatchTime("");
+    }
+
+    function handleDeleteAllActivityRecords() {
+        Alert.alert(null, "Deseja excluir todos os registros de atividade?", [
+            {
+                text: "Sim",
+                onPress: () => {
+                    dispatch(Creators.deleteAllActivityRecords());
+                }
+            },
+            {
+                text: "Não",
+                style: "cancel"
+            }
+        ])
+    }
+
+    function handleCopyActivityRecords() {
+        let formatedString = "";
+
+        activity_records.map(record => formatedString += `${record.description} - ${record.time}\n`);
+
+        Clipboard.setString(formatedString);
+
+        Alert.alert(null, "Copiado com sucesso!");
     }
 
     return (
@@ -183,8 +208,9 @@ const Home: React.FC = () => {
             </Section>
             <Section style={{ marginBottom: 16 }}>
                 <SectionHeader>
-                    <Title>Registro de atividades</Title>
-                    <Text style={{ color: "#ccc" }}>Copiar</Text>
+                    <Title>Suas atividades</Title>
+                    <Text onPress={handleCopyActivityRecords} style={{ color: "#ccc" }}>Copiar</Text>
+                    <Text onPress={handleDeleteAllActivityRecords} style={{ color: "#ccc" }}>Excluir</Text>
                 </SectionHeader>
                 <FlatList
                     data={activity_records}
