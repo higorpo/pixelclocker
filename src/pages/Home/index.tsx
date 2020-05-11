@@ -35,9 +35,8 @@ const Home: React.FC = () => {
 
     useEffect(() => {
         const today = new Date();
-        let todaySchedules = scheduled.filter(item => item.date.getDate() == today.getDate() && item.date.getMonth() + 1 == today.getMonth() + 1 && item.date.getFullYear() == today.getFullYear())
-
-        let sortedByDate = todaySchedules.sort((a, b) => a.date.getTime() - b.date.getTime());;
+        let todaySchedules = scheduled.filter(item => new Date(item.date).getDate() == today.getDate() && new Date(item.date).getMonth() + 1 == today.getMonth() + 1 && new Date(item.date).getFullYear() == today.getFullYear())
+        let sortedByDate = todaySchedules.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
         setScheduledData(sortedByDate);
     }, [scheduled])
 
@@ -85,7 +84,7 @@ const Home: React.FC = () => {
                     renderItem={({ item, index }) => (
                         // @ts-ignore
                         <ScheduleContainer ref={index} descriptionLength={item.description.length}>
-                            <ScheduledTime>{format(item.date, "HH:mm", { locale: brLocale })}</ScheduledTime>
+                            <ScheduledTime>{format(new Date(item.date), "HH:mm", { locale: brLocale })}</ScheduledTime>
                             <ScheduledDescription>{item.description}</ScheduledDescription>
                         </ScheduleContainer>
                     )}

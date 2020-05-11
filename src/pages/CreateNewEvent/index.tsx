@@ -23,7 +23,7 @@ const CreateNewEvent: React.FC = () => {
      */
     const [isDatePickerVisible, setIsDatePickerVisible] = useState<boolean>(false);
 
-    const [dateTime, setDateTime] = useState<Date>();
+    const [dateTime, setDateTime] = useState<any>();
     const [formatedDateTime, setFormatedDateTime] = useState<string>("");
 
     const [description, setDescription] = useState<string>("");
@@ -37,7 +37,7 @@ const CreateNewEvent: React.FC = () => {
 
     function handleConfirmDate(date) {
         setIsDatePickerVisible(false);
-        setDateTime(date);
+        setDateTime(format(new Date(date), "yyyy/MM/dd HH:mm", { locale: brLocale }));
         setFormatedDateTime(format(new Date(date), "EEEE, dd/MM/yyyy - HH:mm", { locale: brLocale }));
     }
 

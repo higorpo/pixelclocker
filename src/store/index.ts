@@ -7,7 +7,9 @@ import reducers from './ducks';
 
 const persistConfig = {
     key: 'root',
-    storage: AsyncStorage
+    storage: AsyncStorage,
+    timeout: 0, // The code base checks for falsy, so 0 disables
+    // blacklist: ['schedule']
 }
 
 const persistedReducer = persistReducer(persistConfig, reducers);
