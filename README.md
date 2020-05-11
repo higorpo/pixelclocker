@@ -3,7 +3,7 @@
 PixelClocker é um aplicativo simples desenvolvido para trilha avançada do processo trainee 2020.1 da Pixel, empresa júnior de Sistemas de Informação e Ciências da Computação da UFSC.
 
 ## Demonstração
-![Print do aplicativo](https://raw.githubusercontent.com/higorpo/pixelclocker/master/_github/screen.jpg?token=ALBORGKWQBFWCOT7SOMWEQC6XHEJC|width=100px)
+![Print do aplicativo](_github/screen.jpg|width=100px)
 
 ## Características
 
