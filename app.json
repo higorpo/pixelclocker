@@ -22,7 +22,13 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "br.ufsc.pixel.pixelclocker",
+      "buildNumber": "1.0.0"
+    },
+    "android": {
+      "package": "br.ufsc.pixel.pixelclocker",
+      "versionCode": 1
     },
     "androidStatusBar": {
       "barStyle": "light-content",
