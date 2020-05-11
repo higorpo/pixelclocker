@@ -1,5 +1,5 @@
 import { useNavigation } from '@react-navigation/native';
-import { format } from 'date-fns';
+import { format, differenceInSeconds } from 'date-fns';
 import brLocale from 'date-fns/locale/pt-BR';
 import React, { useEffect, useState } from 'react';
 import { Button, FlatList, Image, Text, View } from 'react-native';
@@ -23,14 +23,28 @@ const Home: React.FC = () => {
 
     const [scheduledData, setScheduledData] = useState<Array<any>>([]);
 
+    const [formatedStopwatchCounter, setFormatedStopwatchCounter] = useState<string>("");
+    const [startedStopwatch, setStartedStopwatch] = useState<boolean>(false);
+    const [stopwatchLabel, setStopwatchLabel] = useState<string>("");
+    const [startedStopwatchTime, setStartedStopwatchTime] = useState<any>();
+
     /**
      * Store
      */
     const scheduled = useSelector(state => state.schedule);
 
     useEffect(() => {
-        setHourFormated(format(new Date(), "HH:mm", { locale: brLocale }));
-        setDateFormated(format(new Date(), "EEEE, dd", { locale: brLocale }));
+        const timer = setInterval(() => {
+            setHourFormated(format(new Date(), "HH:mm", { locale: brLocale }));
+            setDateFormated(format(new Date(), "EEEE, dd", { locale: brLocale }));
+
+            setHour(new Date().getHours());
+            setMinutes(new Date().getMinutes());
+        }, 1000);
+
+        return () => {
+            clearInterval(timer);
+        }
     }, [])
 
     useEffect(() => {
@@ -40,14 +54,50 @@ const Home: React.FC = () => {
         setScheduledData(sortedByDate);
     }, [scheduled])
 
+    let timer = null;
 
-    // setTimeout(() => {
-    //     setHourFormated(format(new Date(), "HH:mm", { locale: brLocale }));
-    //     setDateFormated(format(new Date(), "EEEE, dd", { locale: brLocale }));
+    useEffect(() => {
+        if (startedStopwatch) {
+            timer = setInterval(() => {
+                const startedDate = new Date(startedStopwatchTime);
+                const diff = differenceInSeconds(new Date(), startedDate);
 
-    //     setHour(new Date().getHours());
-    //     setMinutes(new Date().getMinutes());
-    // }, 1000);
+                if (!diff) setFormatedStopwatchCounter("00:00:00"); // divide by 0 protection
+                const hours = Math.abs(Math.floor(diff / 60 / 60)).toString();
+                const minutes = Math.abs(Math.floor(diff / 60) % 60).toString();
+                const seconds = (diff - parseInt(hours) * 60 * 60 - (parseInt(minutes) * 60)).toString();
+
+                setFormatedStopwatchCounter(`${hours.length < 2 ? 0 + hours : hours}:${minutes.length < 2 ? 0 + minutes : minutes}:${seconds.length < 2 ? 0 + seconds : seconds}`);
+                console.log(`${hours.length < 2 ? 0 + hours : hours}:${minutes.length < 2 ? 0 + minutes : minutes}:${seconds.length < 2 ? 0 + seconds : seconds}`)
+            }, 1000);
+        } else {
+            setFormatedStopwatchCounter("00:00:00");
+        }
+
+        return () => {
+            if (timer) {
+                clearInterval(timer);
+            }
+        }
+    }, [startedStopwatch])
+
+    function handleStopwatch() {
+        if (startedStopwatch) {
+            handleClearStopwatch();
+        } else {
+            handleStartStopwatch();
+        }
+    }
+
+    function handleStartStopwatch() {
+        console.log("Oi")
+        setStartedStopwatch(true);
+        setStartedStopwatchTime(Date.now());
+    }
+
+    function handleClearStopwatch() {
+        setStartedStopwatch(false);
+    }
 
     return (
         <Container>
@@ -100,16 +150,25 @@ const Home: React.FC = () => {
                     alignItems: "center",
                 }}>
                     <StopWatchLabelContainer>
-                        <StopWatchLabelInput
-                            placeholder="O que você irá fazer?"
-                        />
+                        {
+                            startedStopwatch ?
+                                <Text numberOfLines={1} style={{ color: "white", paddingVertical: 4 }}>
+                                    {formatedStopwatchCounter} - {stopwatchLabel}
+                                </Text>
+                                :
+                                <StopWatchLabelInput
+                                    placeholder="O que você irá fazer?"
+                                    value={stopwatchLabel}
+                                    onChangeText={value => setStopwatchLabel(value)}
+                                />
+                        }
                     </StopWatchLabelContainer>
                     <View style={{
                         marginTop: -10
                     }}>
                         <Button
-                            title="Iniciar"
-                            onPress={() => null}
+                            title={startedStopwatch ? "Parar" : "Iniciar"}
+                            onPress={handleStopwatch}
                             color="#A2189D"
                         />
                     </View>
