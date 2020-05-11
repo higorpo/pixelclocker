@@ -64,7 +64,7 @@ const Home: React.FC = () => {
                     <Text style={{ color: "#ccc" }} onPress={() => navigation.navigate("CreateNewEvent")}>Criar novo</Text>
                 </SectionHeader>
                 <FlatList
-                    data={[]}
+                    data={[0]}
                     keyExtractor={item => String(item)}
                     scrollEnabled={false}
                     renderItem={({ item }) => (
