@@ -5,11 +5,6 @@ PixelClocker é um aplicativo simples desenvolvido para trilha avançada do proc
 ## Demonstração
 <img src="./_github/screen.jpg" height="400">
 
-<video width="320" height="240" controls>
-  <source src="./_github/video.mp4" type="video/mp4">
-    Your browser does not support the video tag.
-</video>
-
 ## Características
 
 ### Desenvolvido principalmente com
