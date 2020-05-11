@@ -49,7 +49,7 @@ export const Title = styled.Text`
 export const ScheduleContainer = styled.View`
     flex-direction: row;
     padding: 10px 0px;
-    align-items: flex-start;
+    align-items: ${(props: any) => props.descriptionLength > 35 ? 'flex-start' : 'center'};
 `
 
 export const ScheduledTime = styled.Text`

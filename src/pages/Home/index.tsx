@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from 'react';
-import { Image, View, FlatList, Text, TextInput, Button } from 'react-native';
-import AnalogClock from 'react-native-clock-analog';
-import { Container, Header, ClockerContainer, HourLabel, DateLabel, Section, Title, ScheduleContainer, ScheduledTime, ScheduledDescription, EmptySchedule, SectionHeader, StopWatchLabelInput, StopWatchLabelContainer, ActivityRecordContainer, ActivityRecordDescription, ActivityRecordTime } from './styles';
-import { format, compareAsc } from 'date-fns'
-import brLocale from 'date-fns/locale/pt-BR';
 import { useNavigation } from '@react-navigation/native';
+import { format } from 'date-fns';
+import brLocale from 'date-fns/locale/pt-BR';
+import React, { useEffect, useState } from 'react';
+import { Button, FlatList, Image, Text, View } from 'react-native';
+import AnalogClock from 'react-native-clock-analog';
+import { ActivityRecordContainer, ActivityRecordDescription, ActivityRecordTime, ClockerContainer, Container, DateLabel, EmptySchedule, Header, HourLabel, ScheduleContainer, ScheduledDescription, ScheduledTime, Section, SectionHeader, StopWatchLabelContainer, StopWatchLabelInput, Title } from './styles';
+import { useSelector } from 'react-redux';
 
 const logo = require("../../../assets/logo.png");
 
@@ -20,10 +21,25 @@ const Home: React.FC = () => {
     const [hourFormated, setHourFormated] = useState<string>("00:00");
     const [dateFormated, setDateFormated] = useState<string>("Quarta-feira, 26/03");
 
+    const [scheduledData, setScheduledData] = useState<Array<any>>([]);
+
+    /**
+     * Store
+     */
+    const scheduled = useSelector(state => state.schedule);
+
     useEffect(() => {
         setHourFormated(format(new Date(), "HH:mm", { locale: brLocale }));
         setDateFormated(format(new Date(), "EEEE, dd", { locale: brLocale }));
     }, [])
+
+    useEffect(() => {
+        const today = new Date();
+        let todaySchedules = scheduled.filter(item => item.date.getDate() == today.getDate() && item.date.getMonth() + 1 == today.getMonth() + 1 && item.date.getFullYear() == today.getFullYear())
+
+        let sortedByDate = todaySchedules.sort((a, b) => a.date.getTime() - b.date.getTime());;
+        setScheduledData(sortedByDate);
+    }, [scheduled])
 
 
     // setTimeout(() => {
@@ -64,13 +80,13 @@ const Home: React.FC = () => {
                     <Text style={{ color: "#ccc" }} onPress={() => navigation.navigate("CreateNewEvent")}>Criar novo</Text>
                 </SectionHeader>
                 <FlatList
-                    data={[0]}
-                    keyExtractor={item => String(item)}
+                    data={scheduledData}
                     scrollEnabled={false}
-                    renderItem={({ item }) => (
-                        <ScheduleContainer>
-                            <ScheduledTime>22:10</ScheduledTime>
-                            <ScheduledDescription>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur ultrices.</ScheduledDescription>
+                    renderItem={({ item, index }) => (
+                        // @ts-ignore
+                        <ScheduleContainer ref={index} descriptionLength={item.description.length}>
+                            <ScheduledTime>{format(item.date, "HH:mm", { locale: brLocale })}</ScheduledTime>
+                            <ScheduledDescription>{item.description}</ScheduledDescription>
                         </ScheduleContainer>
                     )}
                     ListEmptyComponent={<EmptySchedule>Não há nada agendado para hoje!</EmptySchedule>}
